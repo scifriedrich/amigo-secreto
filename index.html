@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amigo Secreto</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        input, button { margin: 5px; padding: 10px; }
+        #lista { margin-top: 10px; }
+        #resultado { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>Amigo Secreto</h2>
+    <input type="text" id="nome" placeholder="Nome do participante">
+    <button onclick="adicionar()">Adicionar</button>
+    <ul id="lista"></ul>
+    <button onclick="sortear()">Sortear</button>
+    <div id="resultado"></div>
+
+    <script>
+        let participantes = [];
+
+        function adicionar() {
+            let nome = document.getElementById("nome").value.trim();
+            if (nome && !participantes.includes(nome)) {
+                participantes.push(nome);
+                atualizarLista();
+                document.getElementById("nome").value = "";
+            }
+        }
+
+        function atualizarLista() {
+            let lista = document.getElementById("lista");
+            lista.innerHTML = "";
+            participantes.forEach(nome => {
+                let li = document.createElement("li");
+                li.textContent = nome;
+                lista.appendChild(li);
+            });
+        }
+
+        function sortear() {
+            if (participantes.length < 2) {
+                alert("Adicione pelo menos 2 participantes!");
+                return;
+            }
+            let sorteio = [...participantes];
+            sorteio.sort(() => Math.random() - 0.5);
+            let resultado = "";
+            for (let i = 0; i < participantes.length; i++) {
+                resultado += `${participantes[i]} tirou ${sorteio[(i + 1) % participantes.length]}<br>`;
+            }
+            document.getElementById("resultado").innerHTML = resultado;
+        }
+    </script>
+</body>
+</html>
